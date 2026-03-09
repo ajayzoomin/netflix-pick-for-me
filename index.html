@@ -5,21 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Netflix — Pick For Me | Prototype</title>
   <style>
-    /* ─── Reset & Tokens ────────────────────────────────── */
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
     :root {
-      --red:      #E50914;
-      --red-dim:  rgba(229,9,20,.15);
-      --dark:     #141414;
-      --black:    #000;
-      --card:     #1f1f1f;
-      --border:   rgba(255,255,255,.1);
-      --txt1:     #fff;
-      --txt2:     #b3b3b3;
-      --green:    #46d369;
-      --radius:   6px;
-      --nav-h:    68px;
+      --red:    #E50914;
+      --red-dim: rgba(229,9,20,.15);
+      --dark:   #141414;
+      --black:  #000;
+      --card:   #1f1f1f;
+      --border: rgba(255,255,255,.1);
+      --txt1:   #fff;
+      --txt2:   #b3b3b3;
+      --green:  #46d369;
+      --nav-h:  68px;
     }
 
     body {
@@ -30,45 +28,31 @@
       overflow: hidden;
     }
 
-    /* ─── Screen System ─────────────────────────────────── */
-    .screen {
-      position: absolute; inset: 0;
-      display: none;
-    }
-    .screen.active { display: block; }
+    .screen { position:absolute; inset:0; display:none; }
+    .screen.active { display:block; }
 
     @keyframes fadeUp {
-      from { opacity:0; transform:translateY(14px); }
+      from { opacity:0; transform:translateY(12px); }
       to   { opacity:1; transform:translateY(0); }
     }
     .screen.active { animation: fadeUp .35s ease; }
 
-    /* ─── Shared Nav ────────────────────────────────────── */
+    /* ── Nav ── */
     .nav {
-      position: absolute; top:0; left:0; right:0;
-      height: var(--nav-h);
-      display: flex; align-items: center; gap: 28px;
-      padding: 0 56px;
-      background: linear-gradient(to bottom, rgba(0,0,0,.9) 0%, transparent 100%);
-      z-index: 50;
+      position:absolute; top:0; left:0; right:0; height:var(--nav-h);
+      display:flex; align-items:center; gap:28px; padding:0 56px;
+      background:linear-gradient(to bottom,rgba(0,0,0,.9),transparent);
+      z-index:50;
     }
-    .logo {
-      font-size: 26px; font-weight: 900;
-      color: var(--red); letter-spacing: -1px;
-      font-style: italic; cursor: pointer; user-select: none;
-    }
+    .logo { font-size:26px; font-weight:900; color:var(--red); letter-spacing:-1px; font-style:italic; cursor:pointer; }
     .nav-links { display:flex; gap:18px; }
     .nav-link  { font-size:13px; color:var(--txt2); cursor:pointer; }
-    .nav-link:hover { color: var(--txt1); }
+    .nav-link:hover { color:var(--txt1); }
     .nav-right { margin-left:auto; display:flex; align-items:center; gap:18px; }
-    .avatar    { width:32px;height:32px; background:var(--red); border-radius:4px; cursor:pointer; }
+    .avatar    { width:32px; height:32px; background:var(--red); border-radius:4px; cursor:pointer; }
 
-    /* ─── Buttons ───────────────────────────────────────── */
-    .btn {
-      display:inline-flex; align-items:center; gap:8px;
-      border:none; border-radius:var(--radius);
-      font-weight:700; cursor:pointer; transition:.18s;
-    }
+    /* ── Buttons ── */
+    .btn { display:inline-flex; align-items:center; gap:8px; border:none; border-radius:6px; font-weight:700; cursor:pointer; transition:.18s; }
     .btn-red   { background:var(--red); color:#fff; padding:13px 28px; font-size:15px; }
     .btn-red:hover { background:#f40612; transform:scale(1.02); }
     .btn-white { background:#fff; color:#000; padding:13px 28px; font-size:15px; }
@@ -77,97 +61,84 @@
     .btn-grey:hover { background:rgba(109,109,110,.9); }
     .btn-full  { width:100%; justify-content:center; font-size:15px; padding:15px; }
 
-    /* ═══════════════════════════════════════════════════════
-       SCREEN 1 — Netflix Homepage
-    ═══════════════════════════════════════════════════════ */
+    /* ════════════════════════════════
+       SCREEN 1 — Homepage
+    ════════════════════════════════ */
     #s1 { background:var(--dark); overflow-y:auto; }
 
-    /* Pick For Me card — floats top-right */
+    /* Pick For Me card */
     .pfm-card {
-      position: absolute; top: 88px; right: 56px;
-      background: rgba(14,14,14,.9);
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 22px 22px 18px;
-      width: 230px;
-      text-align: center;
-      backdrop-filter: blur(12px);
-      cursor: pointer;
-      transition: .25s;
-      z-index: 20;
+      position:absolute; top:88px; right:56px;
+      background:rgba(10,10,10,.92); border:1.5px solid var(--border);
+      border-radius:12px; padding:22px 22px 18px; width:230px;
+      text-align:center; backdrop-filter:blur(12px);
+      cursor:pointer; transition:.25s; z-index:20;
     }
-    .pfm-card:hover {
-      border-color: var(--red);
-      box-shadow: 0 6px 28px rgba(229,9,20,.35);
-      transform: translateY(-3px);
-    }
-    .pfm-icon  { font-size:34px; margin-bottom:10px; }
+    .pfm-card:hover { border-color:var(--red); box-shadow:0 6px 28px rgba(229,9,20,.35); transform:translateY(-3px); }
+    .pfm-icon { font-size:34px; margin-bottom:10px; }
     .pfm-card h3 { font-size:15px; font-weight:800; margin-bottom:4px; }
     .pfm-card p  { font-size:11px; color:var(--txt2); line-height:1.5; margin-bottom:14px; }
-    .pfm-mini {
-      background:var(--red); color:#fff; border:none;
-      width:100%; padding:9px; border-radius:4px;
-      font-size:13px; font-weight:700; cursor:pointer;
-    }
+    .pfm-mini    { background:var(--red); color:#fff; border:none; width:100%; padding:9px; border-radius:4px; font-size:13px; font-weight:700; cursor:pointer; }
 
     /* Hero */
     .hero {
-      height: 74vh;
+      height:74vh; position:relative; overflow:hidden;
+      display:flex; align-items:flex-end; padding:0 56px 52px;
+    }
+    .hero-bg {
+      position:absolute; inset:0;
+      background-size:cover; background-position:center;
+      background-color:#0a0a1a;
+    }
+    .hero-bg::after {
+      content:''; position:absolute; inset:0;
       background:
-        linear-gradient(to right, rgba(0,0,0,.72) 40%, transparent 100%),
-        linear-gradient(to bottom, transparent 55%, var(--dark) 100%),
-        linear-gradient(135deg,#0a0a1a,#1a1035,#0d1b2a);
-      display: flex; align-items: flex-end;
-      padding: 0 56px 52px;
+        linear-gradient(to right, rgba(0,0,0,.75) 40%, transparent 100%),
+        linear-gradient(to bottom, transparent 50%, var(--dark) 100%);
     }
-    .hero-content { max-width: 480px; }
-    .hero-badge {
-      display:inline-block;
-      font-size:11px; font-weight:700; letter-spacing:2.5px;
-      color:var(--red); margin-bottom:12px;
-    }
-    .hero-title { font-size:54px; font-weight:900; line-height:1.05; margin-bottom:12px; }
-    .hero-meta  { font-size:13px; color:var(--txt2); margin-bottom:22px; }
-    .hero-btns  { display:flex; gap:12px; }
+    .hero-content { position:relative; z-index:2; max-width:480px; }
+    .hero-badge   { font-size:11px; font-weight:700; letter-spacing:2.5px; color:var(--red); margin-bottom:12px; }
+    .hero-title   { font-size:54px; font-weight:900; line-height:1.05; margin-bottom:12px; }
+    .hero-meta    { font-size:13px; color:var(--txt2); margin-bottom:22px; }
+    .hero-btns    { display:flex; gap:12px; }
 
-    /* Rows */
-    .rows { padding: 8px 56px 40px; }
+    /* Content rows */
+    .rows { padding:8px 56px 40px; }
     .row-title { font-size:18px; font-weight:700; margin-bottom:14px; }
     .thumbs    { display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; }
     .thumbs::-webkit-scrollbar { display:none; }
+
+    /* Thumbnail with real image */
     .thumb {
       flex-shrink:0; width:176px; height:98px; border-radius:4px;
-      cursor:pointer; transition:.2s;
+      cursor:pointer; transition:.2s; overflow:hidden; position:relative;
+      background:#1a1a2e;
     }
     .thumb:hover { transform:scale(1.06); }
-    .t1{background:linear-gradient(135deg,#0f1c2e,#1a3a5c,#0d2137);}
-    .t2{background:linear-gradient(135deg,#2d0a4e,#6b1f9e,#3d0570);}
-    .t3{background:linear-gradient(135deg,#1a0000,#4a0000,#8b0000);}
-    .t4{background:linear-gradient(135deg,#003333,#006655,#00a86b);}
-    .t5{background:linear-gradient(135deg,#1a1a2e,#16213e,#3a3a5c);}
-    .t6{background:linear-gradient(135deg,#2a0a0a,#6b2222,#9b4444);}
-
-    /* ═══════════════════════════════════════════════════════
-       SCREEN 2 — Context Capture
-    ═══════════════════════════════════════════════════════ */
-    #s2 {
-      background: rgba(0,0,0,.93);
-      display: none; align-items:center; justify-content:center;
+    .thumb:hover .thumb-overlay { opacity:1; }
+    .thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+    .thumb-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(transparent 40%, rgba(0,0,0,.85) 100%);
+      display:flex; align-items:flex-end; padding:6px 8px;
+      opacity:0; transition:.2s;
     }
+    .thumb-title { font-size:10px; font-weight:700; color:#fff; line-height:1.3; }
+
+    /* ════════════════════════════════
+       SCREEN 2 — Context Capture
+    ════════════════════════════════ */
+    #s2 { background:rgba(0,0,0,.93); display:none; align-items:center; justify-content:center; }
     #s2.active { display:flex; }
 
     .modal {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 44px 48px;
-      width: 500px;
+      background:var(--card); border:1px solid var(--border);
+      border-radius:10px; padding:44px 48px; width:500px;
     }
     .modal-head { display:flex; align-items:center; gap:12px; margin-bottom:6px; }
     .modal-head span { font-size:26px; }
     .modal-head h2   { font-size:22px; font-weight:800; }
     .modal-sub { font-size:13px; color:var(--txt2); margin-bottom:30px; line-height:1.55; }
-
     .q-label {
       font-size:11px; font-weight:700; letter-spacing:1.5px;
       text-transform:uppercase; color:var(--txt2); margin-bottom:10px;
@@ -177,64 +148,53 @@
       padding:9px 18px; border-radius:20px;
       border:1.5px solid rgba(255,255,255,.18);
       font-size:13px; cursor:pointer; transition:.18s;
-      color:var(--txt2); background:transparent;
-      user-select:none;
+      color:var(--txt2); background:transparent; user-select:none;
     }
-    .chip:hover, .chip.on {
-      border-color:var(--red); color:#fff;
-      background:var(--red-dim);
-    }
-    .skip-link {
-      text-align:center; font-size:12px; color:var(--txt2);
-      cursor:pointer; text-decoration:underline; margin-top:4px;
-    }
+    .chip:hover, .chip.on { border-color:var(--red); color:#fff; background:var(--red-dim); }
+    .skip-link { text-align:center; font-size:12px; color:var(--txt2); cursor:pointer; text-decoration:underline; margin-top:4px; }
     .skip-link:hover { color:#fff; }
 
-    /* ═══════════════════════════════════════════════════════
+    /* ════════════════════════════════
        SCREEN 3 — Thinking
-    ═══════════════════════════════════════════════════════ */
-    #s3 {
-      background: #000;
-      display:none; flex-direction:column;
-      align-items:center; justify-content:center;
-    }
+    ════════════════════════════════ */
+    #s3 { background:#000; display:none; flex-direction:column; align-items:center; justify-content:center; }
     #s3.active { display:flex; }
 
     .spinner-ring {
       width:58px; height:58px;
-      border:3px solid rgba(229,9,20,.2);
-      border-top-color: var(--red);
-      border-radius:50%;
-      animation: spin 1s linear infinite;
-      margin-bottom:30px;
+      border:3px solid rgba(229,9,20,.2); border-top-color:var(--red);
+      border-radius:50%; animation:spin 1s linear infinite; margin-bottom:30px;
     }
     @keyframes spin { to { transform:rotate(360deg); } }
-
     .thinking-h { font-size:20px; font-weight:700; margin-bottom:28px; }
-
     .steps { list-style:none; }
-    .step  {
-      display:flex; align-items:flex-start; gap:10px;
-      font-size:13px; color:var(--txt2);
-      padding:5px 0; opacity:0;
-    }
-    .step.show { animation: stepIn .4s forwards; }
-    .step-dot  {
-      width:7px; height:7px; border-radius:50%;
-      background:var(--red); margin-top:5px; flex-shrink:0;
-    }
-    @keyframes stepIn {
-      from { opacity:0; transform:translateX(-8px); }
-      to   { opacity:1; transform:translateX(0); }
-    }
+    .step  { display:flex; align-items:flex-start; gap:10px; font-size:13px; color:var(--txt2); padding:5px 0; opacity:0; }
+    .step.show { animation:stepIn .4s forwards; }
+    .step-dot  { width:7px; height:7px; border-radius:50%; background:var(--red); margin-top:5px; flex-shrink:0; }
+    @keyframes stepIn { from { opacity:0; transform:translateX(-8px); } to { opacity:1; transform:translateX(0); } }
 
-    /* ═══════════════════════════════════════════════════════
-       SCREEN 4 & 5 — The Pick / Re-Pick (shared layout)
-    ═══════════════════════════════════════════════════════ */
-    .pick-screen {
-      display: flex; align-items:flex-end;
-      padding: 52px 56px;
-      height: 100%;
+    /* ════════════════════════════════
+       SCREENS 4 & 5 — Pick / Re-Pick
+    ════════════════════════════════ */
+    .pick-screen-wrap {
+      position:relative; height:100%; overflow:hidden;
+    }
+    .pick-bg {
+      position:absolute; inset:0;
+      background-size:cover; background-position:center top;
+      background-color:#0a0010;
+      transition: opacity .4s;
+    }
+    .pick-bg::after {
+      content:''; position:absolute; inset:0;
+      background:
+        linear-gradient(to right, rgba(0,0,0,.8) 45%, rgba(0,0,0,.3) 100%),
+        linear-gradient(to bottom, rgba(0,0,0,.3) 0%, transparent 30%, rgba(0,0,0,.7) 65%, #000 100%);
+    }
+    .pick-content {
+      position:relative; z-index:2;
+      display:flex; align-items:flex-end; padding:52px 56px;
+      height:100%;
     }
     .pick-left  { flex:1; min-width:0; }
     .pick-right { width:310px; flex-shrink:0; margin-left:48px; }
@@ -246,113 +206,83 @@
       font-size:10px; font-weight:700; letter-spacing:1.5px;
       color:var(--red); text-transform:uppercase; margin-bottom:16px;
     }
-    .pick-title {
-      font-size:52px; font-weight:900; line-height:1.05;
-      margin-bottom:12px; text-shadow:0 2px 16px rgba(0,0,0,.5);
-    }
+    .pick-title { font-size:52px; font-weight:900; line-height:1.05; margin-bottom:12px; text-shadow:0 2px 16px rgba(0,0,0,.5); }
     .pick-meta  { display:flex; gap:12px; font-size:13px; color:var(--txt2); margin-bottom:16px; }
     .match-pct  { color:var(--green); font-weight:700; }
     .pick-desc  { font-size:14px; color:#ddd; line-height:1.65; max-width:460px; margin-bottom:28px; }
     .pick-btns  { display:flex; gap:12px; flex-wrap:wrap; }
 
+    /* Movie poster card on pick screens */
+    .pick-poster-wrap {
+      position:absolute; right:430px; bottom:52px;
+      width:150px; border-radius:6px; overflow:hidden;
+      box-shadow:0 8px 32px rgba(0,0,0,.7);
+      z-index:3;
+    }
+    .pick-poster-wrap img {
+      width:100%; height:225px; object-fit:cover; display:block;
+    }
+
     /* Why panel */
     .why-panel {
-      background: rgba(0,0,0,.78);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 22px;
-      backdrop-filter: blur(14px);
+      background:rgba(0,0,0,.78); border:1px solid var(--border);
+      border-radius:8px; padding:22px; backdrop-filter:blur(14px);
     }
     .why-head {
       font-size:10px; font-weight:700; letter-spacing:1.5px;
-      text-transform:uppercase; color:var(--red);
-      margin-bottom:16px; display:flex; align-items:center; gap:6px;
+      text-transform:uppercase; color:var(--red); margin-bottom:16px;
+      display:flex; align-items:center; gap:6px;
     }
-    .why-item {
-      display:flex; gap:9px; align-items:flex-start;
-      font-size:12px; color:#ccc; line-height:1.55;
-      margin-bottom:13px;
-    }
+    .why-item  { display:flex; gap:9px; align-items:flex-start; font-size:12px; color:#ccc; line-height:1.55; margin-bottom:13px; }
     .why-item:last-of-type { margin-bottom:0; }
-    .wy-dot {
-      width:6px; height:6px; border-radius:50%;
-      background:var(--red); margin-top:5px; flex-shrink:0;
-    }
-
-    .counter-area {
-      margin-top:16px; padding-top:14px;
-      border-top:1px solid var(--border);
-      text-align:center; font-size:11px; color:var(--txt2);
-    }
+    .wy-dot    { width:6px; height:6px; border-radius:50%; background:var(--red); margin-top:5px; flex-shrink:0; }
+    .counter-area { margin-top:16px; padding-top:14px; border-top:1px solid var(--border); text-align:center; font-size:11px; color:var(--txt2); }
     .dots { display:flex; gap:7px; justify-content:center; margin-top:8px; }
     .d    { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.18); }
     .d.used { background:var(--red); }
 
-    /* Screen 4 bg */
-    #s4 {
-      background:
-        linear-gradient(to right, rgba(0,0,0,.75) 45%, transparent 100%),
-        linear-gradient(to bottom, transparent 35%, rgba(0,0,0,.88) 75%, #000 100%),
-        linear-gradient(135deg,#050510,#1a1040,#2b1055,#0a0020);
-    }
-    /* Screen 5 bg */
-    #s5 {
-      background:
-        linear-gradient(to right, rgba(0,0,0,.75) 45%, transparent 100%),
-        linear-gradient(to bottom, transparent 35%, rgba(0,0,0,.88) 75%, #000 100%),
-        linear-gradient(135deg,#100a00,#3d1f00,#7a3b00,#2a1000);
-    }
-
-    /* ═══════════════════════════════════════════════════════
+    /* ════════════════════════════════
        SCREEN 6 — Post-Watch Feedback
-    ═══════════════════════════════════════════════════════ */
-    #s6 {
-      background: var(--dark);
-      display:none; flex-direction:column;
-      align-items:center; justify-content:center;
-    }
+    ════════════════════════════════ */
+    #s6 { background:var(--dark); display:none; flex-direction:column; align-items:center; justify-content:center; }
     #s6.active { display:flex; }
 
-    .fb-wrap   { text-align:center; max-width:380px; }
-    .fb-sub    { font-size:12px; color:var(--txt2); margin-bottom:6px; letter-spacing:1px; text-transform:uppercase; }
+    .fb-wrap   { text-align:center; max-width:400px; }
+    .fb-sub    { font-size:11px; color:var(--txt2); margin-bottom:6px; letter-spacing:1px; text-transform:uppercase; }
     .fb-movie  { font-size:34px; font-weight:900; margin-bottom:6px; }
     .fb-q      { font-size:17px; color:#ccc; margin-bottom:32px; }
+    .fb-poster {
+      width:120px; height:180px; object-fit:cover;
+      border-radius:6px; margin:0 auto 20px;
+      display:block; box-shadow:0 8px 24px rgba(0,0,0,.5);
+    }
     .fb-btns   { display:flex; gap:22px; justify-content:center; margin-bottom:28px; }
     .fb-btn    {
       width:68px; height:68px; border-radius:50%;
-      border:2px solid rgba(255,255,255,.2);
-      background:rgba(255,255,255,.04);
+      border:2px solid rgba(255,255,255,.2); background:rgba(255,255,255,.04);
       font-size:30px; cursor:pointer; transition:.2s;
       display:flex; align-items:center; justify-content:center;
     }
     .fb-btn:hover { border-color:#fff; background:rgba(255,255,255,.12); transform:scale(1.1); }
     .fb-note   { font-size:13px; color:var(--txt2); line-height:1.6; margin-bottom:28px; min-height:40px; }
 
-    /* ─── Dot Navigation ────────────────────────────────── */
+    /* ── Dot nav ── */
     .dot-nav {
       position:fixed; bottom:22px; left:50%; transform:translateX(-50%);
       display:flex; gap:8px; z-index:200;
     }
-    .dot {
-      width:8px; height:8px; border-radius:4px;
-      background:rgba(255,255,255,.28); cursor:pointer; transition:.25s;
-    }
+    .dot { width:8px; height:8px; border-radius:4px; background:rgba(255,255,255,.28); cursor:pointer; transition:.25s; }
     .dot.active { background:var(--red); width:22px; }
 
-    /* ─── Prototype Badge ───────────────────────────────── */
     .proto-badge {
       position:fixed; top:10px; right:10px;
       background:rgba(229,9,20,.9); color:#fff;
       font-size:10px; font-weight:700; letter-spacing:1.2px;
-      padding:4px 10px; border-radius:4px; z-index:999;
-      text-transform:uppercase;
+      padding:4px 10px; border-radius:4px; z-index:999; text-transform:uppercase;
     }
-
-    /* ─── Screen label ──────────────────────────────────── */
     .screen-label {
       position:fixed; bottom:50px; left:50%; transform:translateX(-50%);
-      font-size:11px; color:var(--txt2); letter-spacing:.5px;
-      z-index:200; white-space:nowrap;
+      font-size:11px; color:var(--txt2); letter-spacing:.5px; z-index:200; white-space:nowrap;
     }
   </style>
 </head>
@@ -360,9 +290,9 @@
 
 <div class="proto-badge">Prototype</div>
 
-<!-- ════════════════════════════════════════════
+<!-- ══════════════════════════════════════
      SCREEN 1 — Netflix Homepage
-════════════════════════════════════════════ -->
+══════════════════════════════════════ -->
 <div class="screen active" id="s1">
   <nav class="nav">
     <span class="logo">NETFLIX</span>
@@ -374,22 +304,23 @@
       <span class="nav-link">My List</span>
     </div>
     <div class="nav-right">
-      <span style="font-size:17px;cursor:pointer;">🔍</span>
-      <span style="font-size:17px;cursor:pointer;">🔔</span>
+      <span style="font-size:17px;cursor:pointer">🔍</span>
+      <span style="font-size:17px;cursor:pointer">🔔</span>
       <div class="avatar"></div>
     </div>
   </nav>
 
-  <!-- Pick For Me floating card -->
+  <!-- Pick For Me card -->
   <div class="pfm-card" onclick="go(2)">
     <div class="pfm-icon">🎯</div>
     <h3>Can't decide?</h3>
     <p>Let Netflix pick the perfect watch for you — right now</p>
-    <button class="pfm-mini" onclick="go(2)">Pick For Me →</button>
+    <button class="pfm-mini">Pick For Me →</button>
   </div>
 
   <!-- Hero -->
   <div class="hero">
+    <div class="hero-bg" style="background-image:url('https://picsum.photos/seed/squidhero/1400/800')"></div>
     <div class="hero-content">
       <div class="hero-badge">🏆 #1 IN INDIA TODAY</div>
       <div class="hero-title">Squid Game</div>
@@ -401,45 +332,32 @@
     </div>
   </div>
 
-  <!-- Content rows -->
+  <!-- Rows -->
   <div class="rows">
     <div class="row-title">Trending Now</div>
-    <div class="thumbs">
-      <div class="thumb t1"></div><div class="thumb t2"></div>
-      <div class="thumb t3"></div><div class="thumb t4"></div>
-      <div class="thumb t5"></div><div class="thumb t6"></div>
-      <div class="thumb t2"></div><div class="thumb t3"></div>
-    </div>
+    <div class="thumbs" id="row1"></div>
 
     <div class="row-title" style="margin-top:28px">Top Picks For You</div>
-    <div class="thumbs">
-      <div class="thumb t3"></div><div class="thumb t6"></div>
-      <div class="thumb t1"></div><div class="thumb t5"></div>
-      <div class="thumb t4"></div><div class="thumb t2"></div>
-      <div class="thumb t6"></div><div class="thumb t1"></div>
-    </div>
+    <div class="thumbs" id="row2"></div>
   </div>
 </div>
 
 
-<!-- ════════════════════════════════════════════
+<!-- ══════════════════════════════════════
      SCREEN 2 — Context Capture
-════════════════════════════════════════════ -->
+══════════════════════════════════════ -->
 <div class="screen" id="s2">
-  <nav class="nav">
-    <span class="logo" onclick="go(1)">NETFLIX</span>
-  </nav>
-
-  <div style="height:100%;display:flex;align-items:center;justify-content:center;">
+  <nav class="nav"><span class="logo" onclick="go(1)">NETFLIX</span></nav>
+  <div style="height:100%;display:flex;align-items:center;justify-content:center">
     <div class="modal">
       <div class="modal-head"><span>🎯</span><h2>Let's find your pick</h2></div>
       <p class="modal-sub">Two quick inputs — Netflix does the rest.</p>
 
       <div class="q-label">How much time do you have?</div>
       <div class="chips" id="time-g">
-        <span class="chip" onclick="pick(this,'time-g')">~30 min</span>
-        <span class="chip on"  onclick="pick(this,'time-g')">~1 hour</span>
-        <span class="chip"     onclick="pick(this,'time-g')">2+ hours</span>
+        <span class="chip"    onclick="pick(this,'time-g')">~30 min</span>
+        <span class="chip on" onclick="pick(this,'time-g')">~1 hour</span>
+        <span class="chip"    onclick="pick(this,'time-g')">2+ hours</span>
       </div>
 
       <div class="q-label">Mood tonight?</div>
@@ -449,7 +367,7 @@
         <span class="chip"    onclick="pick(this,'mood-g')">🎲 Surprise Me</span>
       </div>
 
-      <div style="margin-top:28px;display:flex;flex-direction:column;gap:11px;">
+      <div style="margin-top:28px;display:flex;flex-direction:column;gap:11px">
         <button class="btn btn-red btn-full" onclick="go(3)">🎯 &nbsp;Find My Pick</button>
         <span class="skip-link" onclick="go(3)">Skip — let Netflix decide entirely →</span>
       </div>
@@ -458,70 +376,66 @@
 </div>
 
 
-<!-- ════════════════════════════════════════════
-     SCREEN 3 — Thinking / AI Processing
-════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════
+     SCREEN 3 — AI Thinking
+══════════════════════════════════════ -->
 <div class="screen" id="s3">
   <nav class="nav"><span class="logo" onclick="go(1)">NETFLIX</span></nav>
-
-  <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+  <div style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center">
     <div class="spinner-ring"></div>
     <div class="thinking-h">Finding your perfect pick…</div>
     <ul class="steps" id="step-list">
       <li class="step" id="st1"><span class="step-dot"></span>Scanning your watch history &amp; ratings…</li>
       <li class="step" id="st2"><span class="step-dot"></span>It's a Tuesday evening — filtering by ideal runtime…</li>
       <li class="step" id="st3"><span class="step-dot"></span>You've been on a thriller streak lately…</li>
-      <li class="step" id="st4"><span class="step-dot"></span>92 % confidence match found ✓</li>
+      <li class="step" id="st4"><span class="step-dot"></span>92% confidence match found ✓</li>
     </ul>
   </div>
 </div>
 
 
-<!-- ════════════════════════════════════════════
-     SCREEN 4 — The Pick
-════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════
+     SCREEN 4 — The Pick (Parasite)
+══════════════════════════════════════ -->
 <div class="screen" id="s4">
   <nav class="nav"><span class="logo" onclick="go(1)">NETFLIX</span></nav>
+  <div class="pick-screen-wrap">
+    <div class="pick-bg" style="background-image:url('https://picsum.photos/seed/darkthrillercinema/1400/800')"></div>
 
-  <div class="pick-screen">
-    <div class="pick-left">
-      <div class="ai-tag">🎯 Netflix Picked This For You</div>
-      <div class="pick-title">Parasite</div>
-      <div class="pick-meta">
-        <span class="match-pct">92% Match</span>
-        <span>2019</span><span>15+</span>
-        <span>2h 12min</span>
-        <span>Dark Thriller · Comedy</span>
-      </div>
-      <div class="pick-desc">
-        A darkly comic thriller about two families from opposite ends of society
-        whose lives collide in unexpected ways. Bong Joon-ho's Palme d'Or masterpiece.
-      </div>
-      <div class="pick-btns">
-        <button class="btn btn-white" onclick="go(6)">▶&nbsp; Watch Now</button>
-        <button class="btn btn-grey"  onclick="go(5)">↻&nbsp; Pick Another</button>
-      </div>
+    <!-- Movie poster card -->
+    <div class="pick-poster-wrap">
+      <img src="https://picsum.photos/seed/parasite_poster/300/450" alt="Parasite poster"
+           onerror="this.style.display='none'">
     </div>
 
-    <div class="pick-right">
-      <div class="why-panel">
-        <div class="why-head">🎯 Why we picked this tonight</div>
-        <div class="why-item">
-          <span class="wy-dot"></span>
-          <span>You rated <strong>The Platform</strong> 5 ★ — same controlled tension &amp; social commentary</span>
+    <div class="pick-content">
+      <div class="pick-left">
+        <div class="ai-tag">🎯 Netflix Picked This For You</div>
+        <div class="pick-title">Parasite</div>
+        <div class="pick-meta">
+          <span class="match-pct">92% Match</span>
+          <span>2019</span><span>15+</span><span>2h 12min</span>
+          <span>Dark Thriller · Comedy</span>
         </div>
-        <div class="why-item">
-          <span class="wy-dot"></span>
-          <span>It's 11 pm on a weeknight — 2h 12min is a clean, no-cliffhanger commitment</span>
+        <div class="pick-desc">
+          A darkly comic thriller about two families from opposite ends of society whose lives
+          collide in unexpected ways. Bong Joon-ho's Palme d'Or masterpiece.
         </div>
-        <div class="why-item">
-          <span class="wy-dot"></span>
-          <span>94 % of viewers with your taste profile finished this in one sitting</span>
+        <div class="pick-btns">
+          <button class="btn btn-white" onclick="watchNow('Parasite','parasite_poster')">▶&nbsp; Watch Now</button>
+          <button class="btn btn-grey"  onclick="go(5)">↻&nbsp; Pick Another</button>
         </div>
-        <div class="counter-area">
-          Re-picks remaining
-          <div class="dots">
-            <div class="d"></div><div class="d"></div><div class="d"></div>
+      </div>
+
+      <div class="pick-right">
+        <div class="why-panel">
+          <div class="why-head">🎯 Why we picked this tonight</div>
+          <div class="why-item"><span class="wy-dot"></span><span>You rated <strong>The Platform</strong> 5 ★ — same controlled tension &amp; social commentary</span></div>
+          <div class="why-item"><span class="wy-dot"></span><span>It's 11pm on a weeknight — 2h 12min is a clean, no-cliffhanger commitment</span></div>
+          <div class="why-item"><span class="wy-dot"></span><span>94% of viewers with your taste profile finished this in one sitting</span></div>
+          <div class="counter-area">
+            Re-picks remaining
+            <div class="dots"><div class="d"></div><div class="d"></div><div class="d"></div></div>
           </div>
         </div>
       </div>
@@ -530,51 +444,49 @@
 </div>
 
 
-<!-- ════════════════════════════════════════════
-     SCREEN 5 — Re-Pick (Pick 2 of 3)
-════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════
+     SCREEN 5 — Re-Pick (Grand Budapest)
+══════════════════════════════════════ -->
 <div class="screen" id="s5">
   <nav class="nav"><span class="logo" onclick="go(1)">NETFLIX</span></nav>
+  <div class="pick-screen-wrap">
+    <div class="pick-bg" style="background-image:url('https://picsum.photos/seed/warmcinemaeurope/1400/800')"></div>
 
-  <div class="pick-screen">
-    <div class="pick-left">
-      <div class="ai-tag">↻ New Pick — 2 of 3 remaining</div>
-      <div class="pick-title">The Grand<br>Budapest Hotel</div>
-      <div class="pick-meta">
-        <span class="match-pct">88% Match</span>
-        <span>2014</span><span>PG-13</span>
-        <span>1h 39min</span>
-        <span>Comedy · Mystery</span>
-      </div>
-      <div class="pick-desc">
-        A whimsical comedy about a legendary hotel concierge and his protégé
-        caught up in an unlikely caper. Wes Anderson's most beloved film.
-      </div>
-      <div class="pick-btns">
-        <button class="btn btn-white"  onclick="go(6)">▶&nbsp; Watch Now</button>
-        <button class="btn btn-grey"   id="last-pick-btn" onclick="lastPick()">↻&nbsp; One More Pick</button>
-      </div>
+    <!-- Movie poster card -->
+    <div class="pick-poster-wrap">
+      <img src="https://picsum.photos/seed/budapest_poster/300/450" alt="Grand Budapest poster"
+           onerror="this.style.display='none'">
     </div>
 
-    <div class="pick-right">
-      <div class="why-panel">
-        <div class="why-head">🔄 Why we switched it up</div>
-        <div class="why-item">
-          <span class="wy-dot"></span>
-          <span>You skipped the heavy thriller — going lighter this time</span>
+    <div class="pick-content">
+      <div class="pick-left">
+        <div class="ai-tag">↻ New Pick — 2 of 3 remaining</div>
+        <div class="pick-title">The Grand<br>Budapest Hotel</div>
+        <div class="pick-meta">
+          <span class="match-pct">88% Match</span>
+          <span>2014</span><span>PG-13</span><span>1h 39min</span>
+          <span>Comedy · Mystery</span>
         </div>
-        <div class="why-item">
-          <span class="wy-dot"></span>
-          <span>Shorter runtime fits a weeknight without the weight of a long film</span>
+        <div class="pick-desc">
+          A whimsical comedy about a legendary hotel concierge and his protégé caught up in
+          an unlikely caper. Wes Anderson's most beloved film.
         </div>
-        <div class="why-item">
-          <span class="wy-dot"></span>
-          <span>Your history shows you love sharp dialogue &amp; ensemble casts</span>
+        <div class="pick-btns">
+          <button class="btn btn-white"
+                  onclick="watchNow('The Grand Budapest Hotel','budapest_poster')">▶&nbsp; Watch Now</button>
+          <button class="btn btn-grey" id="last-pick-btn" onclick="lastPick()">↻&nbsp; One More Pick</button>
         </div>
-        <div class="counter-area" id="s5-counter">
-          Re-picks remaining
-          <div class="dots">
-            <div class="d used"></div><div class="d"></div><div class="d"></div>
+      </div>
+
+      <div class="pick-right">
+        <div class="why-panel">
+          <div class="why-head">🔄 Why we switched it up</div>
+          <div class="why-item"><span class="wy-dot"></span><span>You skipped the heavy thriller — going lighter &amp; more playful this time</span></div>
+          <div class="why-item"><span class="wy-dot"></span><span>Shorter runtime — fits a weeknight without the weight of a long film</span></div>
+          <div class="why-item"><span class="wy-dot"></span><span>Your history shows you love sharp dialogue &amp; ensemble casts</span></div>
+          <div class="counter-area" id="s5-counter">
+            Re-picks remaining
+            <div class="dots"><div class="d used"></div><div class="d"></div><div class="d"></div></div>
           </div>
         </div>
       </div>
@@ -583,32 +495,32 @@
 </div>
 
 
-<!-- ════════════════════════════════════════════
+<!-- ══════════════════════════════════════
      SCREEN 6 — Post-Watch Feedback
-════════════════════════════════════════════ -->
+══════════════════════════════════════ -->
 <div class="screen" id="s6">
   <nav class="nav"><span class="logo" onclick="go(1)">NETFLIX</span></nav>
-
-  <div style="height:100%;display:flex;align-items:center;justify-content:center;">
+  <div style="height:100%;display:flex;align-items:center;justify-content:center">
     <div class="fb-wrap">
       <div class="fb-sub">You just watched</div>
-      <div class="fb-movie">Parasite</div>
+      <!-- ✅ Fixed: dynamically shows whichever movie was actually watched -->
+      <img id="fb-poster-img" class="fb-poster"
+           src="https://picsum.photos/seed/parasite_poster/300/450" alt="Movie poster">
+      <div class="fb-movie" id="fb-movie-title">Parasite</div>
       <div class="fb-q">Was that a good pick?</div>
       <div class="fb-btns">
         <button class="fb-btn" onclick="fbDone(true)">👍</button>
         <button class="fb-btn" onclick="fbDone(false)">👎</button>
       </div>
-      <div class="fb-note" id="fb-note">
-        Your response trains Pick For Me to get sharper every session.
-      </div>
+      <div class="fb-note" id="fb-note">Your response trains Pick For Me to get sharper every session.</div>
       <button class="btn btn-grey btn-full" onclick="go(1)">Back to Home</button>
     </div>
   </div>
 </div>
 
 
-<!-- ─── Dot Navigation ─────────────────────── -->
-<div class="dot-nav" id="dot-nav">
+<!-- ── Dot nav ── -->
+<div class="dot-nav">
   <div class="dot active" onclick="go(1)"></div>
   <div class="dot"        onclick="go(2)"></div>
   <div class="dot"        onclick="go(3)"></div>
@@ -620,6 +532,30 @@
 
 
 <script>
+  /* ── Data ── */
+  const MOVIES = {
+    trending: [
+      { title:'Squid Game',      seed:'squidgame2024' },
+      { title:'Money Heist',     seed:'moneyheist_dark' },
+      { title:'Dark',            seed:'dark_german_forest' },
+      { title:'Stranger Things', seed:'strangerthings_retro' },
+      { title:'Ozark',           seed:'ozark_lake_noir' },
+      { title:'Narcos',          seed:'narcos_colombia' },
+      { title:'Mindhunter',      seed:'mindhunter_fbi' },
+      { title:'The Crown',       seed:'thecrown_palace' },
+    ],
+    picks: [
+      { title:'Parasite',          seed:'parasite_alley' },
+      { title:'Peaky Blinders',    seed:'peakyblinders_smoke' },
+      { title:'The Witcher',       seed:'witcher_forest' },
+      { title:'Breaking Bad',      seed:'breakingbad_desert' },
+      { title:'Lupin',             seed:'lupin_paris' },
+      { title:'Wednesday',         seed:'wednesday_school' },
+      { title:'Black Mirror',      seed:'blackmirror_tech' },
+      { title:'1899',              seed:'1899_ocean_ship' },
+    ]
+  };
+
   const labels = [
     'Screen 1 of 6 — Netflix Homepage',
     'Screen 2 of 6 — Context Capture',
@@ -632,40 +568,68 @@
   let cur = 1;
   let thinkTimer = null;
 
+  /* ── Build thumbnail rows ── */
+  function buildRow(containerId, movies) {
+    const container = document.getElementById(containerId);
+    movies.forEach(m => {
+      const div = document.createElement('div');
+      div.className = 'thumb';
+      div.innerHTML = `
+        <img src="https://picsum.photos/seed/${m.seed}/360/200"
+             alt="${m.title}"
+             onerror="this.parentElement.style.background='linear-gradient(135deg,#1a1a2e,#16213e)'"
+             loading="lazy">
+        <div class="thumb-overlay">
+          <div class="thumb-title">${m.title}</div>
+        </div>`;
+      container.appendChild(div);
+    });
+  }
+
+  buildRow('row1', MOVIES.trending);
+  buildRow('row2', MOVIES.picks);
+
+  /* ── Navigation ── */
   function go(n) {
     if (thinkTimer) { clearTimeout(thinkTimer); thinkTimer = null; }
-
     document.getElementById('s' + cur).classList.remove('active');
     document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i === n-1));
     document.getElementById('scr-label').textContent = labels[n-1];
-
     cur = n;
     document.getElementById('s' + n).classList.add('active');
-
     if (n === 3) runThinking();
   }
 
-  /* Step-by-step thinking animation */
+  /* ── Thinking animation ── */
   function runThinking() {
-    const steps = [1,2,3,4];
-    steps.forEach(i => document.getElementById('st'+i).classList.remove('show'));
-    const delays = [350, 950, 1600, 2280];
-    steps.forEach((i,idx) => {
+    [1,2,3,4].forEach(i => document.getElementById('st'+i).classList.remove('show'));
+    [350, 950, 1600, 2280].forEach((delay, idx) => {
       setTimeout(() => {
-        const el = document.getElementById('st'+i);
+        const el = document.getElementById('st'+(idx+1));
         if (el) el.classList.add('show');
-      }, delays[idx]);
+      }, delay);
     });
     thinkTimer = setTimeout(() => go(4), 3200);
   }
 
-  /* Chip selection */
+  /* ── Chip selection ── */
   function pick(el, groupId) {
     document.querySelectorAll('#'+groupId+' .chip').forEach(c => c.classList.remove('on'));
     el.classList.add('on');
   }
 
-  /* Last pick logic */
+  /* ── ✅ Watch Now — tracks which movie was actually watched ── */
+  function watchNow(movieTitle, posterSeed) {
+    document.getElementById('fb-movie-title').textContent = movieTitle;
+    document.getElementById('fb-poster-img').src =
+      `https://picsum.photos/seed/${posterSeed}/300/450`;
+    document.getElementById('fb-note').textContent =
+      'Your response trains Pick For Me to get sharper every session.';
+    document.querySelectorAll('.fb-btn').forEach(b => b.disabled = false);
+    go(6);
+  }
+
+  /* ── Last pick lock ── */
   function lastPick() {
     const btn = document.getElementById('last-pick-btn');
     btn.textContent = '🔒 Browse instead';
@@ -677,11 +641,12 @@
       </div>`;
   }
 
-  /* Feedback response */
+  /* ── Feedback ── */
   function fbDone(liked) {
+    const movieTitle = document.getElementById('fb-movie-title').textContent;
     document.getElementById('fb-note').innerHTML = liked
-      ? '<strong style="color:var(--green)">Nice!</strong> Pick For Me will lean into this. Gets sharper every session.'
-      : 'Got it — calibrating away from picks like this. Netflix learns fast.';
+      ? `<strong style="color:var(--green)">Nice!</strong> Pick For Me will lean into picks like <em>${movieTitle}</em>. Gets sharper every session.`
+      : `Got it — calibrating away from picks like <em>${movieTitle}</em>. Netflix learns fast.`;
     document.querySelectorAll('.fb-btn').forEach(b => b.disabled = true);
   }
 </script>
